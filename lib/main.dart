@@ -1,55 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:keerthi_ram_flutter_app/Provider/service_provider.dart';
-import 'package:keerthi_ram_flutter_app/model/constants.dart';
-import 'package:keerthi_ram_flutter_app/views/SplashScreen.dart';
-import 'package:keerthi_ram_flutter_app/views/user_dashbord_screen.dart';
-import 'package:keerthi_ram_flutter_app/views/user_sigin.dart';
+import 'package:mini_app2/provider/provider_screvice.dart';
+import 'package:mini_app2/views/api.dart';
+import 'package:mini_app2/views/landing_screen.dart';
+import 'package:mini_app2/views/chit_bill_history.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => ServiceProvider())
-    ], child: const MyApp()),
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => ApiProvider()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<ApiProvider>(context, listen: false)
+        .userDetails('9176039882', '1234');
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Task',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: kPrimaryColor,
-            scaffoldBackgroundColor: const Color.fromARGB(255, 247, 240, 240),
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                // elevation: 0,
-                // primary: kPrimaryColor,
-                maximumSize: const Size(double.infinity, 56),
-                minimumSize: const Size(double.infinity, 56),
-              ),
-            ),
-            inputDecorationTheme: const InputDecorationTheme(
-              filled: true,
-              fillColor: Colors.amber,
-              iconColor: kPrimaryColor,
-              prefixIconColor: kPrimaryColor,
-              contentPadding: EdgeInsets.symmetric(
-                  horizontal: defaultPadding, vertical: defaultPadding),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                borderSide: BorderSide.none,
-              ),
-            )),
-        home:
-
-            //  SplashScreenPage(),
-            const UserRegisterScreen()
-        // const UserDashbordScreen()
-        );
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 247, 240, 240),
+      ),
+      home: Scaffold(body: LandingScreen()),
+    );
   }
 }
